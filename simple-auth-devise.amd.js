@@ -168,6 +168,7 @@ define("simple-auth-devise/authenticators/devise",
           type:       'POST',
           data:       data,
           dataType:   'json',
+          contentType: 'application/json; charset=UTF-8',
           beforeSend: function(xhr, settings) {
             xhr.setRequestHeader('Accept', settings.accepts.json);
           }
@@ -247,12 +248,14 @@ define("simple-auth-devise/authorizers/devise",
       },
 
       authorize: function(jqXHR, requestOptions) {
-        var secureData         = this.get('session.secure');
-        var userToken          = secureData[this.tokenAttributeName];
-        var userIdentification = secureData[this.identificationAttributeName];
-        if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userIdentification)) {
-          var authData = this.tokenAttributeName + '="' + userToken + '", ' + this.identificationAttributeName + '="' + userIdentification + '"';
-          jqXHR.setRequestHeader('Authorization', 'Token ' + authData);
+        var secureData           = this.get('session.secure');
+        if (secureData) {
+          var userToken          = secureData[this.tokenAttributeName];
+          var userIdentification = secureData[this.identificationAttributeName];
+          if (this.get('session.isAuthenticated') && !Ember.isEmpty(userToken) && !Ember.isEmpty(userIdentification)) {
+            var authData = this.tokenAttributeName + '="' + userToken + '", ' + this.identificationAttributeName + '="' + userIdentification + '"';
+            jqXHR.setRequestHeader('Authorization', 'Token ' + authData);
+          }
         }
       }
     });
