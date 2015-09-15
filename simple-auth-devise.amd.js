@@ -168,7 +168,7 @@ define("simple-auth-devise/authenticators/devise",
           type:       'POST',
           data:       data,
           dataType:   'json',
-          contentType: 'application/json; charset=UTF-8',
+          contentType: 'application/vnd.api+json; charset=UTF-8',
           beforeSend: function(xhr, settings) {
             xhr.setRequestHeader('Accept', settings.accepts.json);
           }
